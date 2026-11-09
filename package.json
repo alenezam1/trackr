@@ -1,0 +1,87 @@
+{
+  "name": "sponsorfirst-daily15",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SponsorFirst / Daily 15 — personal sponsor-first UK job hunter and application tracker (local only)",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "npm run build:ui && electron .",
+    "dev:web": "concurrently -k -n server,ui \"tsx watch server/index.ts\" \"vite\"",
+    "start:server": "tsx server/index.ts",
+    "build:ui": "vite build",
+    "test": "vitest run tests/unit",
+    "test:e2e": "vitest run tests/e2e",
+    "lint": "eslint server src tests",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "db:migrate": "tsx server/cli.ts migrate",
+    "sponsors:import": "tsx server/cli.ts import-sponsors",
+    "fixtures:seed": "tsx server/cli.ts seed-demo",
+    "build:server": "esbuild server/index.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist-server/server.mjs --banner:js=\"import { createRequire as __cr } from 'module'; const require = __cr(import.meta.url);\"",
+    "dist:exe": "npm run build:ui && npm run build:server && electron-builder --win portable nsis",
+    "dist:installer": "npm run build:ui && npm run build:server && electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "uk.local.sponsorfirst",
+    "electronVersion": "37.10.3",
+    "productName": "SponsorFirst",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**",
+      "dist/**",
+      "dist-server/**",
+      "package.json",
+      "!node_modules/**"
+    ],
+    "extraResources": [
+      {
+        "from": "SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-05.csv",
+        "to": "SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-05.csv"
+      }
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "@types/node": "^22.7.5",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.4.20",
+    "cheerio": "^1.0.0",
+    "concurrently": "^9.0.1",
+    "csv-parse": "^5.5.6",
+    "electron": "^33.0.0",
+    "electron-builder": "^26.0.12",
+    "esbuild": "^0.25.10",
+    "eslint": "^9.12.0",
+    "lucide-react": "^0.452.0",
+    "postcss": "^8.4.47",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.14",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.9.0",
+    "vite": "^5.4.9",
+    "vitest": "^2.1.3",
+    "zod": "^3.23.8"
+  }
+}

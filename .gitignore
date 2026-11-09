@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-server/
+release/
+
+# Local data, logs and secrets
+*.sqlite
+*.sqlite-*
+secrets.json
+logs/
+backups/
+.env
+.env.*
+update-log.txt
+
+# Large public dataset (download from GOV.UK, see README)
+SP_-_Worker_and_Temporary_Worker_Web_Register_*.csv
+data/imports/
+
+# OS / editor
+desktop.ini
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
